@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {connect} from  'react-redux'
+// import {connect} from  'react-redux'
 import {key} from "../../constants";
 import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router'
 
 import './searchStyle.css'
 
@@ -37,26 +38,41 @@ class SearchComponent extends Component {
             searching: false
         })
     };
+    onSearch = ()=>{
+    const {keyWord} = this.state;
+    const {history} = this.props;
+    history.push(`/search/${keyWord}`);
+        this.setState({
+            keyWord: '',
+        })
+    };
+    onChoose = (str)=>{
+        return ()=>{
+            this.setState({
+                keyWord: str
+            })
+        }
+    };
 
     render() {
-        const {searching,searched} = this.state;
+        const {searching,searched, keyWord} = this.state;
         return (
             <nav className="navbar navbar-light " >
                 <form className="form-inline position-relative" >
-                    <input className="form-control mr-sm-2 searchW" type="text" size="50" onChange={this.handler} />
+                    <input className="form-control mr-sm-2 searchW" type="text" value={keyWord} size="25" onChange={this.handler} />
                     <div>
-                        {!searching && <ul className="list-group fixed">
+                        {!searching && <ul className="list-group fixed ">
 
-                            {!!searched && searched.map(value =>  <li key={value.id}
-                                                                      className="list-group-item">
-
-                                <Link to={`/search/${value.name}`}>{value.name}</Link>
-
+                            {!!keyWord &&!!searched && searched.map(value =>  <li key={value.id}
+                                                                                  className="list-group-item bg-dark text-white onActive"
+                                                                                  onClick={this.onChoose(value.name)}
+                            >
+                                {value.name}
                             </li>)}
                         </ul>}
 
                     </div>
-                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.onSearch} type="button">Search</button>
                 </form>
             </nav>
         );
@@ -64,4 +80,5 @@ class SearchComponent extends Component {
 }
 
 
-export const Search = connect()(SearchComponent);
+// export const Search = connect()(SearchComponent);
+export const Search = withRouter(SearchComponent);

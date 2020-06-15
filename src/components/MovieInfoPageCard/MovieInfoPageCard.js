@@ -1,30 +1,42 @@
 import React, {Component} from 'react';
 import {BackgroundImage} from "../../MovieINFOcomponents/BackGroundImage/BackgroundImage";
+import {connect} from "react-redux";
+import {StartRating} from "../../MovieINFOcomponents/StarsRating/StartRating";
+import {DefaultBackground} from "../defaultImages/defaultBackground";
 
 
-export class MovieInfoPageCard extends Component {
+export class MovieInfoPageCardComponent extends Component {
+
+    componentDidMount() {
+    }
 
     render() {
-        const {movie} = this.props;
-        const {backdrop_path} = movie;
+        const {movie, genres} = this.props;
+        const {backdrop_path, title,tagline, vote_average, vote_count} = movie;
         console.log(movie);
         console.log(backdrop_path);
         return (
-            <div>
-                <div className="jumbotron-fluid">
-                    <BackgroundImage background_Path={backdrop_path}/>
-                    <h1 className="display-3">Hello, world!</h1>
-                    <p className="lead">This is a simple hero unit, a simple jumbotron-style component for
-                        calling extra attention to featured content or information.</p>
-                    <hr className="my-2"/>
-                        <p>It uses utility classes for typography and
-                            spacing to space content out within the larger container.</p>
-                        <p className="lead">
-                            <a className="btn btn-primary btn-lg" href="#!" role="button">Some action</a>
-                        </p>
+            <div className='container'>
+
+                {!!backdrop_path
+                    ?  <BackgroundImage background_Path={backdrop_path}/>
+                    :  <DefaultBackground/>
+                }
+
+                <div className="jumbotron">
+
+                    <h1 className="display-3">{title}</h1>
+                    <p className="lead">{tagline}</p>
+                    <hr className="my-2 d-flex"/>
+                    <StartRating rating={vote_average}/>
+                    <span className="badge badge-light m-3">{vote_count}</span>
                 </div>
+
+
             </div>
         );
     }
 }
 
+
+export const MovieInfoPageCard = connect()(MovieInfoPageCardComponent)

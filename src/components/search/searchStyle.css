@@ -3,3 +3,9 @@
     left: 5px;
     margin-top: 20px;
 }
+.onActive {
+    cursor: pointer;
+}
+.onActive:active {
+    background-color: deepskyblue;
+}

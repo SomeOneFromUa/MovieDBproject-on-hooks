@@ -6,6 +6,7 @@ import {StartRating} from "../../MovieINFOcomponents/StarsRating/StartRating";
 import {GenreBadge} from "../../MovieINFOcomponents/GenreBadge/genreBadge";
 import {PosterPreview} from "../../MovieINFOcomponents/PosterPreview/posterPreview";
 import {MovieInfo} from '../../MovieINFOcomponents/MovieInfo/MovieInfo'
+import {DefaultPoster} from "../defaultImages/defaultPoster";
 
 import './CustomCardStyle.css'
 import {Link} from "react-router-dom";
@@ -39,7 +40,13 @@ export class MovieListCardComponent extends Component {
         return (
             <div className="card cardCustom ">
                     <div className="card-body">
-                        <PosterPreview posterPath={poster_path}/>
+
+                        {!!poster_path
+                            ? <PosterPreview posterPath={poster_path}/>
+                            : <DefaultPoster/>
+                        }
+
+
                         <GenreBadge genres={genres}/>
                         <MovieInfo movie={movie}/>
                         <Link to={`/movie/${movie.id}`}>read more</Link>
@@ -61,4 +68,4 @@ const mapStateToProps = (store)=>{
     }
 };
 
-export const MovieListCard = connect(mapStateToProps)(MovieListCardComponent)
+export const MovieListCard = connect(mapStateToProps)(MovieListCardComponent);

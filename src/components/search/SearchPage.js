@@ -46,7 +46,7 @@ export class SearchPage extends Component {
         const {isDownloading,isDownloaded,error, searched} = this.state;
         return (
 
-            <div>
+            <div className='d-flex flex-wrap container'>
 
                 {isDownloading && !isDownloaded && <SpinnerBLosks/> }
                 {!isDownloading && !isDownloaded && <div>{error}</div> }
