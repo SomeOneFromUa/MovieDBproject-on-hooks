@@ -4,7 +4,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
 } from "react-router-dom";
 import {Provider} from 'react-redux'
 import {MovieDBstore} from '../../store/MovieDB'
@@ -28,7 +29,9 @@ class MoviesPage extends Component {
             <Router>
                 <Header/>
                 <Switch>
-                    <Route path='/' exact component={MovieList}/>
+                    <Route path='/page/:page'
+                           component={MovieList}
+                    ></Route>
 
                     <Route path='/movie/:movieID'
                              render={(routerProps)=>{
@@ -40,7 +43,7 @@ class MoviesPage extends Component {
                                return   (<SearchPage  {...routerProps}/>)
                            }}
                     />
-
+                    <Redirect from='/' to='/page/1'/>
 
                 </Switch>
 

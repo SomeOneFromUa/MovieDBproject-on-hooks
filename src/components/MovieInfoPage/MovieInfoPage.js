@@ -28,10 +28,8 @@ export class MovieInfoPage extends Component {
         });
         const {match: {params: {movieID}}} = this.props;
         let response = await fetch(`https://api.themoviedb.org/3/movie/${movieID}?api_key=${key}`);
-        console.log(response);
             if (response.ok) {
                 let json = await response.json();
-                console.log(json);
                 this.setState({
                     movie: json,
                     isDownloading:false,

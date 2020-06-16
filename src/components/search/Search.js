@@ -11,14 +11,16 @@ class SearchComponent extends Component {
     state = {
         keyWord: '',
         searched: [],
-        searching: false
+        searching: false,
+        isOpen: true
     };
     handler = (ev)=>{
         this.setState({
-            keyWord: ev.target.value
+            keyWord: ev.target.value,
+            isOpen: true
         })
     };
-    
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         // console.log(prevState.keyWord,this.state.keyWord );
         if (prevState.keyWord === this.state.keyWord || this.state.keyWord === '') return;
@@ -39,6 +41,9 @@ class SearchComponent extends Component {
         })
     };
     onSearch = ()=>{
+        this.setState({
+            isOpen: false
+        });
     const {keyWord} = this.state;
     const {history} = this.props;
     history.push(`/search/${keyWord}`);
@@ -54,16 +59,53 @@ class SearchComponent extends Component {
         }
     };
 
+
+ componentDidMount() {
+document.addEventListener('click', this.onClose);
+ }
+ componentWillUnmount() {
+document.removeEventListener('click', this.onClose)
+ }
+ searchDropRef = React.createRef();
+ inputRef = React.createRef();
+
+ onClose = (event)=> {
+     if (this.searchDropRef.current === null) return;
+     if (this.searchDropRef && !this.searchDropRef.current.contains(event.target)){
+         this.setState({
+             isOpen: false
+         })
+     }
+     if (this.inputRef && this.inputRef.current.contains(event.target)) {
+         this.setState({
+             isOpen: true
+         })
+     }
+ };
+
+handlerKey = (event)=>{
+        if(event.key === 'Enter'){
+            event.preventDefault()
+      this.onSearch()
+        }
+}
+
     render() {
-        const {searching,searched, keyWord} = this.state;
+        const {searching,searched, keyWord, isOpen} = this.state;
         return (
             <nav className="navbar navbar-light " >
                 <form className="form-inline position-relative" >
-                    <input className="form-control mr-sm-2 searchW" type="text" value={keyWord} size="25" onChange={this.handler} />
+                    <input className="form-control mr-sm-2 searchW"
+                           type="text"
+                           value={keyWord}
+                           size="25"
+                           onChange={this.handler}
+                           ref={this.inputRef}
+                            onKeyPress={this.handlerKey}
+                    />
                     <div>
-                        {!searching && <ul className="list-group fixed ">
-
-                            {!!keyWord &&!!searched && searched.map(value =>  <li key={value.id}
+                        {!searching && <ul className="list-group fixed" ref={this.searchDropRef}>
+                            {isOpen &&!!keyWord &&!!searched && searched.map(value =>  <li key={value.id}
                                                                                   className="list-group-item bg-dark text-white onActive"
                                                                                   onClick={this.onChoose(value.name)}
                             >

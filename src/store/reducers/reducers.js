@@ -4,17 +4,20 @@ import {GET_GENRES, GET_MOVIES, SEARCH} from '../actions-type/index'
 const defaultStore = {
     movies: [],
     genres: [],
-    searched: []
+    curPage: 1,
+    curGenre: '',
 };
 
 export function mainReducer(store = defaultStore, action) {
 
     switch (action.type) {
         case GET_MOVIES: {
-            const {payload} = action;
+            const {payload, page, genre} = action;
             return {
                 ...store,
-                movies: payload
+                movies: payload,
+                curPage: page,
+                curGenre: genre || ''
             }
         }
         case GET_GENRES: {

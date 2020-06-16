@@ -13,8 +13,6 @@ export class MovieInfoPageCardComponent extends Component {
     render() {
         const {movie, genres} = this.props;
         const {backdrop_path, title,tagline, vote_average, vote_count} = movie;
-        console.log(movie);
-        console.log(backdrop_path);
         return (
             <div className='container'>
 

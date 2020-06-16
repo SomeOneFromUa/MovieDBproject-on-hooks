@@ -1,9 +1,11 @@
 import {GET_GENRES, GET_MOVIES, SEARCH} from '../actions-type/index'
 
-export const getMovies = (arr)=>{
+export const getMovies = (arr, page, genre)=>{
     return{
         type: GET_MOVIES,
-        payload: arr
+        payload: arr,
+        page: page,
+        genre: genre
     }
 };
 

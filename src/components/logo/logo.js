@@ -12,7 +12,7 @@ return(
         <div className='align-self-center'>
             <h3>MovieDB</h3>
             <h6>react app</h6>
-            <Link to='/'>HOME</Link>
+            <Link to='/page/1'>HOME</Link>
         </div>
     </div>
 )
