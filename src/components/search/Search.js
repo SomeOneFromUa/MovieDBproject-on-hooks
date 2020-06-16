@@ -41,12 +41,13 @@ class SearchComponent extends Component {
         })
     };
     onSearch = ()=>{
+        const {keyWord} = this.state;
+        if (keyWord === '') return;
         this.setState({
             isOpen: false
         });
-    const {keyWord} = this.state;
     const {history} = this.props;
-    history.push(`/search/${keyWord}`);
+    history.push(`/search/1?keyword=${keyWord}`);
         this.setState({
             keyWord: '',
         })

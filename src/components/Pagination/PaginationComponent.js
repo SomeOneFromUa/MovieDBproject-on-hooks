@@ -4,17 +4,19 @@ import {Link} from "react-router-dom";
 
 
 class Pagination extends Component {
-    
+    onClick = (page)=>{
+        const {pages} = this.props;
+        if (+page === 1 || +page === pages ) return;
+        return window.scrollTo(0,0)
+    };
     render() {
-        const {match: {params: {page}, path},location: {search} } = this.props;
-        debugger
-
+        const {match: {params: {page}},location: {search}, url, pages} = this.props;
         return (
 
             <nav aria-label="Page navigation example">
                 <ul className="pagination pagination-lg justify-content-center">
                     <li className="page-item">
-                        <Link onClick={()=>{window.scrollTo(0,0)}} className="page-link" to={`/page/${page>1 ? +page-1 : page}${!!search? search: ''}`}>previous</Link>
+                        <Link onClick={this.onClick(page)} className="page-link" to={`${url}${page>1 ? +page-1 : page}${!!search? search: ''}`}>previous</Link>
                     </li>
                     {+page-1 !== 0 &&
                     <li className="page-item">
@@ -25,11 +27,14 @@ class Pagination extends Component {
                     <li className="page-item active">
                         <span className="page-link">{page}</span>
                     </li>
+                    {!(+page === +pages) &&
                     <li className="page-item">
                         <span className="page-link"> {+page+1}</span>
                     </li>
+                    }
+
                     <li className="page-item">
-                        <Link onClick={window.scrollTo(0,0)} className="page-link" to={`/page/${+page+1}${!!search? search: ''}`}>next</Link>
+                        <Link onClick={this.onClick(page)} className="page-link" to={`${url}${+page ===  +pages? page: +page+1}${!!search? search: ''}`}>next</Link>
                             <span aria-hidden="true">&raquo;</span>
                             <span className="sr-only">Next</span>
 

@@ -6,6 +6,10 @@ const defaultStore = {
     genres: [],
     curPage: 1,
     curGenre: '',
+    searched: [],
+    totalPage: '',
+    totalResults: '',
+    curSearchPage: ''
 };
 
 export function mainReducer(store = defaultStore, action) {
@@ -28,10 +32,15 @@ export function mainReducer(store = defaultStore, action) {
             }
         }
         case SEARCH: {
-            const {payload} = action;
+
+            const {payload, totalR,totalP, curPage} = action;
             return {
                 ...store,
-                searched: payload
+                searched  : payload,
+                totalPage: totalP,
+                totalResults: totalR,
+                curSearchPage: curPage
+
             }
         }
 

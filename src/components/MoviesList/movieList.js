@@ -16,6 +16,7 @@ class MovieListComponent extends Component {
         genreDownloading: false
     };
     componentDidMount() {
+        console.log('render');
         const {match: {params: {page}},location: {search}} = this.props;
         if (this.props.curPage !== page) {
             this.fetchGenres();
@@ -100,7 +101,7 @@ class MovieListComponent extends Component {
                 }
                 {isDownloaded && !isDownloading && !error &&
                 <div className='container row justify-content-center '>
-                <PaginationComponent/>
+                <PaginationComponent url={/page/}/>
                 </div>
                 }
             </div>

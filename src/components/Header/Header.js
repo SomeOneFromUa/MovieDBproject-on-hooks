@@ -11,11 +11,8 @@ export class Header extends Component {
         return (
             <div className='sticky-top container- justify-content-around d-flex header'>
                 <LogoHeader/>
-                <div className='d-flex'>
                     <NavBar/>
                     <Search/>
-                </div>
-
                 <UserInfo/>
             </div>
         );

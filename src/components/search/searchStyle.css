@@ -9,3 +9,6 @@
 .onActive:active {
     background-color: deepskyblue;
 }
+.transition {
+    transition: 2s;
+}

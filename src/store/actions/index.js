@@ -15,9 +15,12 @@ export const getGenres = (arr)=>{
         payload: arr
     }
 };
-export const search = (searched)=>{
+export const getSearched = (searched, totalP, totalR, page)=>{
     return {
         type: SEARCH,
-        payload: searched
+        payload: searched,
+        totalR: totalR,
+        totalP: totalP,
+        curPage: page
     }
 };
