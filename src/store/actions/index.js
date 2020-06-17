@@ -1,4 +1,4 @@
-import {GET_GENRES, GET_MOVIES, SEARCH} from '../actions-type/index'
+import {GET_GENRES, GET_MOVIES, SEARCH, CLEAR_ON_HOME, ADD_TO_FAVORITES} from '../actions-type/index'
 
 export const getMovies = (arr, page, genre)=>{
     return{
@@ -8,7 +8,6 @@ export const getMovies = (arr, page, genre)=>{
         genre: genre
     }
 };
-
 export const getGenres = (arr)=>{
     return{
         type: GET_GENRES,
@@ -22,5 +21,17 @@ export const getSearched = (searched, totalP, totalR, page)=>{
         totalR: totalR,
         totalP: totalP,
         curPage: page
+    }
+};
+export const clearOnHome = ()=>{
+    return {
+        type: CLEAR_ON_HOME
+    }
+};
+
+export const addToFavorites = (movie)=>{
+    return {
+        type: ADD_TO_FAVORITES,
+        payload: movie
     }
 };

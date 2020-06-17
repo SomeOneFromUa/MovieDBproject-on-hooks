@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {GET_GENRES, GET_MOVIES, SEARCH} from '../actions-type/index'
+import {CLEAR_ON_HOME, GET_GENRES, GET_MOVIES, SEARCH, ADD_TO_FAVORITES} from '../actions-type/index'
 
 const defaultStore = {
     movies: [],
@@ -9,7 +9,8 @@ const defaultStore = {
     searched: [],
     totalPage: '',
     totalResults: '',
-    curSearchPage: ''
+    curSearchPage: '',
+    favorites: []
 };
 
 export function mainReducer(store = defaultStore, action) {
@@ -43,7 +44,30 @@ export function mainReducer(store = defaultStore, action) {
 
             }
         }
-
+        case CLEAR_ON_HOME: {
+            return {
+                ...store,
+                curGenre: ''
+            }
+        }
+        case ADD_TO_FAVORITES: {
+            const {payload} =action;
+            const {favorites} = store;
+           const index = favorites.findIndex(value => value.id === payload.id);
+           if (index === -1){
+               return {
+                   ...store,
+                   favorites: [...favorites, payload]
+               }
+           }else if (index >= 0) {
+               const FavoritesCopy = [...favorites];
+               FavoritesCopy.splice(index,1);
+               return {
+                   ...store,
+                   favorites: FavoritesCopy
+               }
+           }else return store
+        }
         default: return store
     }
 

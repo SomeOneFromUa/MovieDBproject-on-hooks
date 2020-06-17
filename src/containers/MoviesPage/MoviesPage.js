@@ -13,6 +13,7 @@ import {Header} from "../../components/Header/Header";
 import {MovieList} from "../../components/MoviesList/movieList"
 import {MovieInfoPage} from "../../components/MovieInfoPage/MovieInfoPage";
 import {SearchPage} from "../../components/search/SearchPage";
+import {FavoritesPage} from "../../components/FavoritesPage/favoritesPage";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -36,6 +37,9 @@ class MoviesPage extends Component {
                            render={(routerProps)=>{
                                return   (<SearchPage  {...routerProps}/>)
                            }}/>
+                    <Route path='/favorites'
+                           component={FavoritesPage}
+                    ></Route>
                     <Redirect from='/' to='/page/1'/>
                 </Switch>
             </Router>

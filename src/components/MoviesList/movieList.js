@@ -110,7 +110,7 @@ class MovieListComponent extends Component {
 }
 const mapDispatchToProps = ({
     getGenres,
-    getMovies
+    getMovies,
 });
 const mapStateToProps = (store)=>{
     const {mainReducer: {movies, curPage, genres, curGenre}} = store;
