@@ -12,8 +12,7 @@ class Pagination extends Component {
     render() {
         const {match: {params: {page}},location: {search}, url, pages} = this.props;
         return (
-
-            <nav aria-label="Page navigation example">
+            <nav aria-label="Page navigation example m-0">
                 <ul className="pagination pagination-lg justify-content-center">
                     <li className="page-item">
                         <Link onClick={this.onClick(page)} className="page-link" to={`${url}${page>1 ? +page-1 : page}${!!search? search: ''}`}>previous</Link>
@@ -23,7 +22,6 @@ class Pagination extends Component {
                         <span className="page-link">{+page-1}</span>
                     </li>
                     }
-
                     <li className="page-item active">
                         <span className="page-link">{page}</span>
                     </li>
@@ -32,16 +30,13 @@ class Pagination extends Component {
                         <span className="page-link"> {+page+1}</span>
                     </li>
                     }
-
                     <li className="page-item">
                         <Link onClick={this.onClick(page)} className="page-link" to={`${url}${+page ===  +pages? page: +page+1}${!!search? search: ''}`}>next</Link>
-                            <span aria-hidden="true">&raquo;</span>
-                            <span className="sr-only">Next</span>
 
+                            <span className="sr-only">Next</span>
                     </li>
                 </ul>
             </nav>
-
         );
     }
 }

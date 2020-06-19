@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
-// import {connect} from  'react-redux'
 import {key} from "../../constants";
-import {Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
-
 import './searchStyle.css'
-
+import {DarkThemeContext} from "../../context/contexts";
 
 class SearchComponent extends Component {
     state = {
@@ -20,7 +17,7 @@ class SearchComponent extends Component {
             isOpen: true
         })
     };
-
+    static contextType = DarkThemeContext;
     componentDidUpdate(prevProps, prevState, snapshot) {
         // console.log(prevState.keyWord,this.state.keyWord );
         if (prevState.keyWord === this.state.keyWord || this.state.keyWord === '') return;
@@ -33,7 +30,7 @@ class SearchComponent extends Component {
         });
         let arr = await fetch(`https://api.themoviedb.org/3/search/keyword?query=${word}&api_key=${key}`);
         let json = await arr.json();
-        if (json.status_code === 34) return ;
+        if (json.status) return ;
         json.results.length = 10;
         this.setState({
             searched: json.results,
@@ -41,6 +38,7 @@ class SearchComponent extends Component {
         })
     };
     onSearch = ()=>{
+        const {func} = this.props;
         const {keyWord} = this.state;
         if (keyWord === '') return;
         this.setState({
@@ -51,6 +49,7 @@ class SearchComponent extends Component {
         this.setState({
             keyWord: '',
         })
+        func && func()
     };
     onChoose = (str)=>{
         return ()=>{
@@ -59,8 +58,6 @@ class SearchComponent extends Component {
             })
         }
     };
-
-
  componentDidMount() {
 document.addEventListener('click', this.onClose);
  }
@@ -83,23 +80,23 @@ document.removeEventListener('click', this.onClose)
          })
      }
  };
-
 handlerKey = (event)=>{
         if(event.key === 'Enter'){
-            event.preventDefault()
+            event.preventDefault();
       this.onSearch()
         }
-}
-
+};
     render() {
+        const darkTheme = this.context;
         const {searching,searched, keyWord, isOpen} = this.state;
+
         return (
-            <nav className="navbar navbar-light " >
+            <nav className="navbar navbar-light" >
                 <form className="form-inline position-relative" >
-                    <input className="form-control mr-sm-2 searchW"
+                    <input className="form-control mr-sm-2"
                            type="text"
                            value={keyWord}
-                           size="25"
+                           size="15"
                            onChange={this.handler}
                            ref={this.inputRef}
                             onKeyPress={this.handlerKey}
@@ -107,13 +104,12 @@ handlerKey = (event)=>{
                     <div>
                         {!searching && <ul className="list-group fixed" ref={this.searchDropRef}>
                             {isOpen &&!!keyWord &&!!searched && searched.map(value =>  <li key={value.id}
-                                                                                  className="list-group-item bg-dark text-white onActive"
+                                                                                  className={`list-group-item ${!darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}
                                                                                   onClick={this.onChoose(value.name)}
                             >
                                 {value.name}
                             </li>)}
                         </ul>}
-
                     </div>
                         <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.onSearch} type="button">Search</button>
                 </form>
@@ -121,7 +117,6 @@ handlerKey = (event)=>{
         );
     }
 }
-
 
 // export const Search = connect()(SearchComponent);
 export const Search = withRouter(SearchComponent);

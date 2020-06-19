@@ -1,20 +1,18 @@
 import React, {Component} from 'react';
-import {LogoHeader} from "../logo/logo";
-import {Search} from "../search/Search";
-import {UserInfo} from "../UserInfo/userInfo";
-import {NavBar} from "../NavBar/NavBar";
-
-import './headerStyle.css'
+import {HeaderDesctop} from "./headerDesctop";
+import {ViewPoints} from "../../context/wrappers/DetectViewPortWrapper";
+import {ViewPortContext} from "../../context/contexts";
+import {HeaderMobile} from "./headerMobile";
 
 export class Header extends Component {
     render() {
+        const curViewPort = this.context;
         return (
-            <div className='sticky-top container- justify-content-around d-flex header'>
-                <LogoHeader/>
-                    <NavBar/>
-                    <Search/>
-                <UserInfo/>
+            <div className='sticky-top'>
+                {curViewPort === ViewPoints.desctop && <HeaderDesctop/>}
+                {(curViewPort === ViewPoints.tablet || curViewPort === ViewPoints.phone) && <HeaderMobile/>}
             </div>
         );
     }
 }
+Header.contextType = ViewPortContext;

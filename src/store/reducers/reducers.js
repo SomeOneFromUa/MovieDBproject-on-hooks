@@ -73,8 +73,6 @@ export function mainReducer(store = defaultStore, action) {
 
 }
 
-
-
 export const rootReducer = ()=>{
     return combineReducers(
         {

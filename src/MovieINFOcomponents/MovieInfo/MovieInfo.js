@@ -3,7 +3,7 @@ import './MovieInfo.css'
 
 export class MovieInfo extends Component {
     render() {
-        const {movie} = this.props;
+        const {movie, flag} = this.props;
         const {title, adult, overview} = movie;
         return (
             <div className='card-body'>
@@ -11,12 +11,10 @@ export class MovieInfo extends Component {
                 {adult
                     ? <span className="badge badge-danger">Adult</span>
                     : <span className="badge badge-success">PG</span>}
-
-                <p className="card-text block">
+                <p className={`card-text ${!flag && ' block'}`}>
                     {overview}
                 </p>
             </div>
         );
     }
 }
-

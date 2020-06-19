@@ -5,11 +5,12 @@ import './UserInfoStyle.css'
 
 export class UserInfo extends Component {
     render() {
+        const {flag} = this.props;
         const {avatar, username} = User;
         return (
-            <div className='m-2 d-flex'>
-                <img className="rounded-circle userAvatar align-self-center" src={avatar} alt="Circle image"/>
-                <h5 className=' align-self-center m-2'>{username}</h5>
+            <div className='UserInfo'>
+                <img className={`rounded-circle ${flag? 'userAvatarScroled' : "userAvatar"}`} src={avatar} alt="Circle image"/>
+                <h5 className='userNameStyle'>{username}</h5>
             </div>
         );
     }

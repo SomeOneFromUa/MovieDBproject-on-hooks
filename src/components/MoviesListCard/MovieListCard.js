@@ -11,6 +11,7 @@ import {withRouter} from "react-router";
 import {addToFavorites} from "../../store/actions";
 
 import './CustomCardStyle.css'
+import {DarkThemeContext} from "../../context/contexts";
 
 export class MovieListCardComponent extends Component {
     state = {
@@ -22,7 +23,9 @@ export class MovieListCardComponent extends Component {
    }
    getGenresForCard = ()=>{
        const {genres} = this.props;
-       const {movie: {genre_ids}} =  this.props;
+       if (!genres) return;
+        const {movie: {genre_ids}} =  this.props;
+        if (!genre_ids) return;
        let arr = [];
        genre_ids.forEach(id => arr.push(genres.find(value=>value.id === id)));
         this.setState({
@@ -34,11 +37,8 @@ export class MovieListCardComponent extends Component {
 goSpecify = (event)=>{
     if (!(this.addRef.current.contains(event.target))) {
         const {history, movie: {id}} = this.props;
-
         history.push(`/movie/${id}`)
     } else return
-
-
 };
     onAdd = (event)=>{
         const {addToFavorites, movie} = this.props;
@@ -46,13 +46,16 @@ goSpecify = (event)=>{
         addToFavorites(movie)
     };
 addRef = React.createRef();
+    static contextType = DarkThemeContext;
     render(){
+        const darkTheme = this.context;
         const {genres} =  this.state;
-        const {movie, favorites} = this.props;
+        const {movie, favorites, location:{pathname}} = this.props;
         if (!movie) return null;
         const {vote_average, poster_path} = movie;
         return (
-            <div className="card cardCustom" onClick={this.goSpecify}>
+            <div className={`card cardCustom ${darkTheme.isDarkTheme? "bg-secondary": ""}`}
+                 onClick={this.goSpecify}>
                     <div className="card-body p-0">
                         <div className='justify-content-center d-flex '>
                             {!!poster_path
@@ -60,17 +63,27 @@ addRef = React.createRef();
                                 : <DefaultPoster/>
                             }
                         </div>
-                        <GenreBadge genres={genres}/>
+                        {pathname !== "/favorites" &&
+                            <GenreBadge genres={genres}/>
+                        }
                         <MovieInfo movie={movie}/>
-
                     </div>
                 <div className="card-footer d-flex justify-content-between">
-                    <StartRating rating={vote_average}/>
-                    <button className={favorites.find(value => value.id === movie.id)? 'btn btn-success' :'btn btn-info'}
+                    {pathname !== "/favorites" && [
+                        <StartRating rating={vote_average}/>,
+                        <button className={favorites.find(value => value.id === movie.id)? 'btn btn-success' :'btn btn-info'}
+                        ref={this.addRef}
+                        onClick={this.onAdd}>
+                            {favorites.find(value => value.id === movie.id)? 'added' :'add'}
+                        </button>
+                    ]}
+                    {pathname === "/favorites" &&
+                    <button className='btn btn-danger'
                             ref={this.addRef}
                             onClick={this.onAdd}>
-                        {favorites.find(value => value.id === movie.id)? 'added' :'add'}
+                       remove
                     </button>
+                    }
                 </div>
             </div>
         );

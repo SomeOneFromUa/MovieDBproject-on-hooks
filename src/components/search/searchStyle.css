@@ -2,13 +2,5 @@
     position: absolute;
     left: 5px;
     margin-top: 20px;
-}
-.onActive {
-    cursor: pointer;
-}
-.onActive:active {
-    background-color: deepskyblue;
-}
-.transition {
-    transition: 2s;
+    z-index: 200;
 }

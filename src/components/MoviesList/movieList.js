@@ -7,6 +7,8 @@ import {key} from "../../constants";
 import {SpinnerBLosks} from "../spinners/spinnerPage";
 import {Collapse} from './collapse'
 import querySring from 'query-string'
+import {DarkThemeContext} from "../../context/contexts";
+import {ViewPortContext} from "../../context/contexts";
 
 class MovieListComponent extends Component {
     state = {
@@ -81,21 +83,24 @@ class MovieListComponent extends Component {
            })
        }
     };
+    static contextType = DarkThemeContext;
+ 
     render() {
+        const darkTheme = this.context;
         const {error,isDownloaded,isDownloading, genreDownloading} =this.state;
         const {movies, genres} = this.props;
         return (
-            <div className='flex-wrap d-flex justify-content-center'>
+            <div className={` h-100 flex-wrap d-flex justify-content-center ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}>
                 {!isDownloaded && !!error && <div>{error}</div>}
 
                 {!genreDownloading && !error &&
                 <div className='col-2'>
-                    <Collapse arr={genres}/>
+                    <Collapse/>
                 </div>
                 }
-                {isDownloading && <SpinnerBLosks/>}
+                    {isDownloading && <SpinnerBLosks/>}
                 {isDownloaded && !isDownloading && !error &&
-                <div className='col-10 d-flex flex-row flex-wrap container'>
+                <div className='container- col-xl-10 col-sm-12 d-flex flex-row flex-wrap container justify-content-center'>
                 {movies.map(movie => <MovieListCard movie={movie} key={movie.id}/>)}
                 </div>
                 }
@@ -121,6 +126,5 @@ const mapStateToProps = (store)=>{
         curGenre
     }
 };
-
 
 export const MovieList = connect(mapStateToProps, mapDispatchToProps)(MovieListComponent);

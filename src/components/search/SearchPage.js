@@ -6,6 +6,7 @@ import {PaginationComponent} from "../Pagination/PaginationComponent";
 import queryString from 'query-string'
 import {connect} from "react-redux";
 import {getSearched} from "../../store/actions";
+import {DarkThemeContext} from "../../context/contexts";
 
 import './searchStyle.css'
 
@@ -27,7 +28,6 @@ class SearchPageComponent extends Component {
                 error: '',
             })
         }
-
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         let prevSearch = queryString.parse(prevProps.location.search);
@@ -44,7 +44,7 @@ class SearchPageComponent extends Component {
         const {match: {params: {page}}, location: {search}, getSearched} = this.props;
         const searched = queryString.parse(search);
         let response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=en-US&query=${searched.keyword}&page=${page}`);
-
+    debugger
         if (response.ok) {
             let json = await response.json();
             const {total_pages, total_results} = json;
@@ -54,24 +54,24 @@ class SearchPageComponent extends Component {
                 isDownloaded: true,
                 error: ''
             });
-
-
         }else {
             this.setState({
                 isDownloading: false,
                 isDownloaded: false,
-                error: 'The resource you requested could not be found'
+                error: `error code: ${response.status}`
             })
         }
     };
+    static contextType = DarkThemeContext;
     render() {
+        const darkTheme = this.context;
         const {isDownloading,isDownloaded,error} = this.state;
         const {searched, totalResults, totalPage, location: {search}}= this.props;
         let keyword = queryString.parse(search);
         return (
             <div>
                 {isDownloaded &&
-                <div className="list-group transition ">
+                <div className="list-group transition">
 
                     <span className={`list-group-item list-group-item-action ${!!searched.length? "list-group-item-info" : 'list-group-item-warning'}  d-flex justify-content-around `}>
                         {searched.length === 0 &&  <h5 className='m-2'>nothin was found for '{keyword.keyword}'</h5> }
@@ -81,28 +81,28 @@ class SearchPageComponent extends Component {
                             <h5 className='m-2'>total pages = {totalPage}</h5>
                             ]
                         }
+                        {!!error && <h5 className='m-2'>{error}</h5> }
 
                     </span>
                 </div>
                 }
-
-                <div className='flex-wrap d-flex flex-row
+                {darkTheme.isDarkTheme && searched.length === 0 && <div className='bg-dark' style={{"height": "90vh"}}></div>}
+                <div className={`flex-wrap d-flex flex-row  h-100
                             container-fluid
                             justify-content-center
-                            '>
+                            ${darkTheme.isDarkTheme? 'bg-dark': 'bg-white'}
+                            `}>
                     {isDownloading && !isDownloaded && <SpinnerBLosks/> }
                     {!isDownloading && !isDownloaded && <div>{error}</div> }
                     {!isDownloading && isDownloaded && !error && searched.map(value => { return <MovieListCard movie={value} key={value.id}/>}) }
 
                 </div>
                 {!isDownloading && isDownloaded && !error && searched.length >= 1 &&
-                <div className='flex-row'>
+                <div className={`flex-row  ${darkTheme.isDarkTheme? 'bg-dark': 'bg-white'}`}>
                     <PaginationComponent url={'/search/'} pages={totalPage}/>
                 </div>
                     }
             </div>
-
-
         );
     }
 }

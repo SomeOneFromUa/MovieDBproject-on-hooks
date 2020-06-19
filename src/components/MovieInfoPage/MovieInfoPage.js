@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {key} from "../../constants";
 import {SpinnerBLosks} from "../spinners/spinnerPage";
 import {MovieInfoPageCard} from '../MovieInfoPageCard/MovieInfoPageCard'
+import {DarkThemeContext} from "../../context/contexts";
 
 export class MovieInfoPage extends Component {
     state = {
@@ -21,7 +22,7 @@ export class MovieInfoPage extends Component {
 
 
     }
-
+    static contextType = DarkThemeContext;
     fetchMovie = async ()=>{
         this.setState({
             isDownloading: true
@@ -46,9 +47,10 @@ export class MovieInfoPage extends Component {
 
     };
     render() {
+        const darkTheme = this.context;
     const {isDownloading,isDownloaded,error, movie} = this.state;
         return (
-            <div className='container'>
+            <div className={`container- ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"} `}>
                 {isDownloading && !isDownloaded && <SpinnerBLosks/> }
                 {!isDownloading && !isDownloaded && <div>{error}</div> }
                 {!isDownloading && isDownloaded && !error && <MovieInfoPageCard movie={movie}/>}
