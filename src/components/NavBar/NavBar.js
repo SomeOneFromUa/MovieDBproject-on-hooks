@@ -9,7 +9,7 @@ import './NavBarStyle.css'
 
 export class NavBarComponent extends Component {
     state = {
-        isNEW: true
+        isNEW: false
     };
     CleareHomePage = ()=>{
         const {func} = this.props;
@@ -24,6 +24,7 @@ export class NavBarComponent extends Component {
         });
         func && setTimeout(()=>{func();},200)
     };
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.favorites.length > prevProps.favorites.length){
             this.setState({
@@ -31,6 +32,8 @@ export class NavBarComponent extends Component {
             })
         }else return
     }
+
+
     static contextType = DarkThemeContext;
     render() {
         const darkTheme = this.context;
@@ -55,7 +58,6 @@ const mapStateToProps =(store)=>{
         favorites
     }
 };
-
  const mapDispatchToProps = ({
     clearOnHome
 });
