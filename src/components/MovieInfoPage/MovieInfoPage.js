@@ -50,7 +50,7 @@ export class MovieInfoPage extends Component {
         const darkTheme = this.context;
     const {isDownloading,isDownloaded,error, movie} = this.state;
         return (
-            <div className={`container ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"} `}>
+            <div className={`container-fluid ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"} `}>
                 {isDownloading && !isDownloaded && <SpinnerBLocks/> }
                 {!isDownloading && !isDownloaded && <div>{error}</div> }
                 {!isDownloading && isDownloaded && !error && <MovieInfoPageCard movie={movie}/>}

@@ -14,11 +14,6 @@ import './CustomCardStyle.css'
 import {DarkThemeContext} from "../../context/contexts";
 
 export class MovieListCardComponent extends Component {
-
-    state = {
-        genres: [],
-    };
-
     componentDidUpdate(prevProps, prevState, snapshot) {
     }
 goSpecify = (event)=>{
@@ -27,7 +22,7 @@ goSpecify = (event)=>{
         history.push(`/movie/${id}`)
     } else return
 };
-    onAdd = (event)=>{
+    onAdd = ()=>{
         const {addToFavorites, movie} = this.props;
         console.log(movie);
         addToFavorites(movie)
@@ -36,7 +31,6 @@ addRef = React.createRef();
     static contextType = DarkThemeContext;
     render(){
         const darkTheme = this.context;
-        const {genres} =  this.props;
         const {movie, favorites, location:{pathname}, arr} = this.props;
        debugger;
         if (!movie) return null;

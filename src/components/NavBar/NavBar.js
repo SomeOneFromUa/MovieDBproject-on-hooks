@@ -33,7 +33,6 @@ export class NavBarComponent extends Component {
     }
     static contextType = DarkThemeContext;
     render() {
-        const {func} = this.props;
         const darkTheme = this.context;
         const {favorites, flag} = this.props;
         const {isNEW} = this.state;

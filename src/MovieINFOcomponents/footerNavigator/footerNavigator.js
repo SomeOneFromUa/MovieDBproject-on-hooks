@@ -7,9 +7,7 @@ class FooterNavigatorComponent extends Component {
         const {history} =  this.props;
         history.go(-1)
     };
-
     render() {
-        const DarkTheme = this.context;
         return (
          <div className="bg-info w-100 p-0 m-0 footerNav">
              <button onClick={this.onBack} className='btn btn-dark m-3'>back</button>

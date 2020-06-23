@@ -8,18 +8,16 @@ import {SpinnerBLocks} from "../spinners/spinnerPage";
 import {Collapse} from './collapse'
 import querySring from 'query-string'
 import {DarkThemeContext} from "../../context/contexts";
-import {ViewPortContext} from "../../context/contexts";
 
 class MovieListComponent extends Component {
     state = {
         isDownloading: false,
         isDownloaded: false,
-        error: '',
-        genreDownloading: false
+        error: ''
     };
     componentDidMount() {
         console.log('render');
-        const {match: {params: {page}},location: {search}} = this.props;
+        const {match: {params: {page}}} = this.props;
         if (this.props.curPage !== page) {
             // this.fetchGenres();
             this.fetchMovies();
@@ -64,7 +62,7 @@ class MovieListComponent extends Component {
                     isDownloading: true
                 });
         console.log('fetch movies');
-        const {match: {params: {page}}, location: {search}, curGenre} = this.props;
+        const {match: {params: {page}}, location: {search}} = this.props;
         let searched = querySring.parse(search);
         const {getMovies} = this.props;
         this.setState({
@@ -90,8 +88,8 @@ class MovieListComponent extends Component {
  
     render() {
         const darkTheme = this.context;
-        const {error,isDownloaded,isDownloading, genreDownloading} =this.state;
-        const {movies, genres} = this.props;
+        const {error,isDownloaded,isDownloading} =this.state;
+        const {movies} = this.props;
         return (
             <div className={` h-100 flex-wrap d-flex justify-content-center ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}>
                 {!isDownloaded && !!error && <div>{error}</div>}
