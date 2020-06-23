@@ -6,8 +6,8 @@ import {
     Route,
     Redirect
 } from "react-router-dom";
-import {Provider} from 'react-redux'
-import {MovieDBstore} from '../../store/MovieDB'
+import {connect} from 'react-redux'
+
 import 'react-bootstrap'
 import {Header} from "../../components/Header/Header";
 import {MovieList} from "../../components/MoviesList/movieList"
@@ -16,15 +16,29 @@ import {SearchPage} from "../../components/search/SearchPage";
 import {FavoritesPage} from "../../components/FavoritesPage/favoritesPage";
 import {DarkThemeWraper} from "../../context/wrappers/DarkThemeWraper";
 import {DetectViewPortWrapper} from "../../context/wrappers/DetectViewPortWrapper";
+import {getGenres} from "../../store/actions";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {key} from "../../constants";
 
-class MoviesPage extends Component {
+class MoviesPageComonent extends Component {
+    componentDidMount() {
+        this.fetchGenres()
+    }
+
+    fetchGenres = async ()=>{
+        const {getGenres}= this.props;
+        console.log('fetch genres');
+        const response =  await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`);
+        let json = await response.json();
+        if (Array.isArray(json.genres)){
+            getGenres(json.genres);
+        }
+    };
     render() {
         return (
             <DetectViewPortWrapper>
             <DarkThemeWraper>
-            <Provider store={MovieDBstore}>
             <Router>
                 <Header/>
                 <Switch>
@@ -45,10 +59,12 @@ class MoviesPage extends Component {
                     <Redirect from='/' to='/page/1'/>
                 </Switch>
             </Router>
-            </Provider>
                 </DarkThemeWraper>
                 </DetectViewPortWrapper>
         );
     }
 }
-export default MoviesPage;
+const mdtp = ({
+    getGenres
+});
+export const MoviesPage = connect(null, mdtp)(MoviesPageComonent);

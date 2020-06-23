@@ -14,24 +14,11 @@ import './CustomCardStyle.css'
 import {DarkThemeContext} from "../../context/contexts";
 
 export class MovieListCardComponent extends Component {
+
     state = {
         genres: [],
     };
 
-   componentDidMount() {
-       this.getGenresForCard()
-   }
-   getGenresForCard = ()=>{
-       const {genres} = this.props;
-       if (!genres) return;
-        const {movie: {genre_ids}} =  this.props;
-        if (!genre_ids) return;
-       let arr = [];
-       genre_ids.forEach(id => arr.push(genres.find(value=>value.id === id)));
-        this.setState({
-            genres: arr
-        })
-   };
     componentDidUpdate(prevProps, prevState, snapshot) {
     }
 goSpecify = (event)=>{
@@ -49,8 +36,9 @@ addRef = React.createRef();
     static contextType = DarkThemeContext;
     render(){
         const darkTheme = this.context;
-        const {genres} =  this.state;
-        const {movie, favorites, location:{pathname}} = this.props;
+        const {genres} =  this.props;
+        const {movie, favorites, location:{pathname}, arr} = this.props;
+       debugger;
         if (!movie) return null;
         const {vote_average, poster_path} = movie;
         return (
@@ -64,7 +52,7 @@ addRef = React.createRef();
                             }
                         </div>
                         {pathname !== "/favorites" &&
-                            <GenreBadge genres={genres}/>
+                            <GenreBadge genres={arr}/>
                         }
                         <MovieInfo movie={movie}/>
                     </div>
@@ -92,11 +80,15 @@ addRef = React.createRef();
 const mapDispathToProps = ({
     addToFavorites
 });
-const mapStateToProps = (store)=>{
+const mapStateToProps = (store, ownProps)=>{
     const {mainReducer: {genres, favorites}} = store;
+    const {movie: {genre_ids}} = ownProps;
+    let arr = [];
+    genre_ids.forEach(id => arr.push(genres.find(value=>value.id === id)));
     return {
         genres,
         favorites,
+        arr
     }
 };
 

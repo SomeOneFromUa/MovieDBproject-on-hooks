@@ -60,11 +60,11 @@ export function mainReducer(store = defaultStore, action) {
                    favorites: [...favorites, payload]
                }
            }else if (index >= 0) {
-               const FavoritesCopy = [...favorites];
-               FavoritesCopy.splice(index,1);
+               const favoritesCopy = [...favorites];
+               favoritesCopy.splice(index,1);
                return {
                    ...store,
-                   favorites: FavoritesCopy
+                   favorites: favoritesCopy
                }
            }else return store
         }
@@ -79,4 +79,4 @@ export const rootReducer = ()=>{
             mainReducer
         }
     )
-}
+};

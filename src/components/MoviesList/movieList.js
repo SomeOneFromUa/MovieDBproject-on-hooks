@@ -4,7 +4,7 @@ import {getGenres,getMovies} from '../../store/actions/index'
 import {MovieListCard} from "../MoviesListCard/MovieListCard";
 import {PaginationComponent} from '../Pagination/PaginationComponent'
 import {key} from "../../constants";
-import {SpinnerBLosks} from "../spinners/spinnerPage";
+import {SpinnerBLocks} from "../spinners/spinnerPage";
 import {Collapse} from './collapse'
 import querySring from 'query-string'
 import {DarkThemeContext} from "../../context/contexts";
@@ -21,7 +21,7 @@ class MovieListComponent extends Component {
         console.log('render');
         const {match: {params: {page}},location: {search}} = this.props;
         if (this.props.curPage !== page) {
-            this.fetchGenres();
+            // this.fetchGenres();
             this.fetchMovies();
         }else {
             this.setState({
@@ -39,27 +39,30 @@ class MovieListComponent extends Component {
         }else return
     }
 
-    fetchGenres = async ()=>{
-        console.log('fetch genres');
-        const {getGenres} = this.props;
-        this.setState({
-            isDownloading: true,
-            genreDownloading: true
-        });
-        const response =  await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`);
-        let json = await response.json();
-        if (Array.isArray(json.genres)){
-            this.setState({
-                genreDownloading: false
-            });
-            getGenres(json.genres);
-        }else    {
-            this.setState({
-                error: json.errors,
-            })
-        }
-    };
+    // fetchGenres = async ()=>{
+    //     console.log('fetch genres');
+    //     const {getGenres} = this.props;
+    //     this.setState({
+    //         isDownloading: true,
+    //         genreDownloading: true
+    //     });
+    //     const response =  await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`);
+    //     let json = await response.json();
+    //     if (Array.isArray(json.genres)){
+    //         this.setState({
+    //             genreDownloading: false
+    //         });
+    //         getGenres(json.genres);
+    //     }else    {
+    //         this.setState({
+    //             error: json.errors,
+    //         })
+    //     }
+    // };
     fetchMovies = async ()=>{
+        this.setState({
+                    isDownloading: true
+                });
         console.log('fetch movies');
         const {match: {params: {page}}, location: {search}, curGenre} = this.props;
         let searched = querySring.parse(search);
@@ -93,12 +96,12 @@ class MovieListComponent extends Component {
             <div className={` h-100 flex-wrap d-flex justify-content-center ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}>
                 {!isDownloaded && !!error && <div>{error}</div>}
 
-                {!genreDownloading && !error &&
+                {!error &&
                 <div className='col-2'>
                     <Collapse/>
                 </div>
                 }
-                    {isDownloading && <SpinnerBLosks/>}
+                    {isDownloading && <SpinnerBLocks/>}
                 {isDownloaded && !isDownloading && !error &&
                 <div className='container- col-xl-10 col-sm-12 d-flex flex-row flex-wrap container justify-content-center'>
                 {movies.map(movie => <MovieListCard movie={movie} key={movie.id}/>)}

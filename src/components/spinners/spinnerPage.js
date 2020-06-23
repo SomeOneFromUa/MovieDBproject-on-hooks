@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import './styleSpinners.css'
 import {DarkThemeContext} from "../../context/contexts";
 
-export class SpinnerBLosks extends Component {
+export class SpinnerBLocks extends Component {
     static contextType = DarkThemeContext;
     render() {
         const darkTheme = this.context;

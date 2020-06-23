@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {key} from "../../constants";
 
-export class PosterPreview extends Component {
-    render() {
-        const {posterPath} = this.props;
+export function PosterPreview (props) {
+        const {posterPath} = props;
         return (
                 <img src={`https://image.tmdb.org/t/p/w300${posterPath}?api_key=${key}`} alt="poster"/>
         );
-    }
 }

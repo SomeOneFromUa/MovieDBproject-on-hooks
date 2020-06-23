@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {key} from "../../constants";
-import {SpinnerBLosks} from "../spinners/spinnerPage";
+import {SpinnerBLocks} from "../spinners/spinnerPage";
 import {MovieInfoPageCard} from '../MovieInfoPageCard/MovieInfoPageCard'
 import {DarkThemeContext} from "../../context/contexts";
 
@@ -50,8 +50,8 @@ export class MovieInfoPage extends Component {
         const darkTheme = this.context;
     const {isDownloading,isDownloaded,error, movie} = this.state;
         return (
-            <div className={`container- ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"} `}>
-                {isDownloading && !isDownloaded && <SpinnerBLosks/> }
+            <div className={`container ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"} `}>
+                {isDownloading && !isDownloaded && <SpinnerBLocks/> }
                 {!isDownloading && !isDownloaded && <div>{error}</div> }
                 {!isDownloading && isDownloaded && !error && <MovieInfoPageCard movie={movie}/>}
             </div>

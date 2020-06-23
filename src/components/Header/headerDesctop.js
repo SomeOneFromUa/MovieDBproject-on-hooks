@@ -14,12 +14,12 @@ export class HeaderDesctop extends Component {
         scrolled: false
     };
     componentDidMount() {
-        document.addEventListener('scroll',this.HeaderStyler)
+        document.addEventListener('scroll',this.headerStyler)
     }
     componentWillUnmount() {
-        document.removeEventListener('scroll', this.HeaderStyler)
+        document.removeEventListener('scroll', this.headerStyler)
     }
-    HeaderStyler = (event)=>{
+    headerStyler = (event)=>{
         if (window.scrollY > 0) {
             this.setState({
                 scrolled: true

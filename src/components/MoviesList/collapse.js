@@ -27,7 +27,7 @@ class CollapseComponent extends Component {
 }
 
 const masStateToProps = (store)=>{
-    const {mainReducer: {curGenre, genres}} = store
+    const {mainReducer: {curGenre, genres}} = store;
     return{
         curGenre,
         genres

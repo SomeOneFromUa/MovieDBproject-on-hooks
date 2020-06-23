@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {SpinnerBLosks} from "../spinners/spinnerPage";
+import {SpinnerBLocks} from "../spinners/spinnerPage";
 import {key} from "../../constants";
 import {MovieListCard} from "../MoviesListCard/MovieListCard";
 import {PaginationComponent} from "../Pagination/PaginationComponent";
@@ -92,7 +92,7 @@ class SearchPageComponent extends Component {
                             justify-content-center
                             ${darkTheme.isDarkTheme? 'bg-dark': 'bg-white'}
                             `}>
-                    {isDownloading && !isDownloaded && <SpinnerBLosks/> }
+                    {isDownloading && !isDownloaded && <SpinnerBLocks/> }
                     {!isDownloading && !isDownloaded && <div>{error}</div> }
                     {!isDownloading && isDownloaded && !error && searched.map(value => { return <MovieListCard movie={value} key={value.id}/>}) }
 
