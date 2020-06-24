@@ -1,3 +1,5 @@
+click on the link to see this project on github pages https://someonefromua.github.io/MovieDBproject/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
