@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 
 import {
     BrowserRouter as Router,
@@ -21,13 +21,14 @@ import {getGenres} from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {key} from "../../constants";
 ///hooks
-class MoviesPageComonent extends Component {
-    componentDidMount() {
-        this.fetchGenres()
-    }
+function MoviesPageComonent (props) {
+    useEffect(()=>{
+        fetchGenres()
+    },[]);
 
-    fetchGenres = async ()=>{
-        const {getGenres}= this.props;
+
+   const fetchGenres = async ()=>{
+        const {getGenres}= props;
         console.log('fetch genres');
         const response =  await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${key}`);
         let json = await response.json();
@@ -35,7 +36,7 @@ class MoviesPageComonent extends Component {
             getGenres(json.genres);
         }
     };
-    render() {
+
         return (
             <DetectViewPortWrapper>
             <DarkThemeWraper>
@@ -62,8 +63,9 @@ class MoviesPageComonent extends Component {
                 </DarkThemeWraper>
                 </DetectViewPortWrapper>
         );
-    }
+
 }
+
 const mdtp = ({
     getGenres
 });

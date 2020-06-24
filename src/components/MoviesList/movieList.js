@@ -10,7 +10,6 @@ import querySring from 'query-string'
 import {DarkThemeContext} from "../../context/contexts";
 import {getMoviesMW} from "../../store/MovieDB";
 
-
 class MovieListComponent extends Component {
     componentDidMount() {
         console.log('render');

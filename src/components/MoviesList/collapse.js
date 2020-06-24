@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useContext} from 'react';
 import {ListGroupItem} from 'reactstrap';
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
@@ -8,20 +8,13 @@ import './movieListStyle.css'
 import './movieListSyle.scss'
 
 
-class CollapseComponent extends Component {
-    static contextType = DarkThemeContext;
-  render() {
-      const darkTheme = this.context;
-      const {genres, curGenre, flag, func} = this.props;
+function CollapseComponent (props) {
+const darkTheme = useContext(DarkThemeContext);
+      const {genres, curGenre, flag, func} = props;
       if (!genres) return ;
       return (
           <div className={flag? 'p-3 d-flex flex-wrap': 'groupList'}>
               {genres.map(value =>
-                  // <ListGroupItem  key={value.id} className={` ${flag && 'w-50'} ${darkTheme.isDarkTheme? "DarkTheme": "BrigtTheme"} ${+curGenre === value.id && 'bg-primary'}`}>
-                  // <NavLink onClick={func}  to={`/page/1?genre=${value.id}`}>
-                  //     <span className={darkTheme.isDarkTheme? 'text-white': +curGenre === value.id? 'text-white': 'text-primary' }>{value.name}</span>
-                  // </NavLink>
-                  // </ListGroupItem>
                   <div  key={value.id} className={`collapseItem collapseItem ${darkTheme.isDarkTheme? 'dark': 'bright'} ${+curGenre === value.id && 'choosen'}  ${flag && 'w-50'}`}>
                   <NavLink onClick={func}  to={`/page/1?genre=${value.id}`}>
                   <span>{value.name}</span>
@@ -30,7 +23,6 @@ class CollapseComponent extends Component {
               )}
           </div>
       )
-  }
 }
 const masStateToProps = (store)=>{
     const {mainReducer: {curGenre, genres}} = store;
