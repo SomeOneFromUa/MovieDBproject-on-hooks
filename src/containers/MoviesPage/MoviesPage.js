@@ -20,7 +20,7 @@ import {getGenres} from "../../store/actions";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {key} from "../../constants";
-
+///hooks
 class MoviesPageComonent extends Component {
     componentDidMount() {
         this.fetchGenres()
