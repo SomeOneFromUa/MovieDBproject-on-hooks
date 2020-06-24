@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {User} from "../../constants";
 
 import './UserInfoStyle.css'
 
-export class UserInfo extends Component {
-    render() {
-        const {flag} = this.props;
+export function UserInfo (props) {
+        const {flag} = props;
         const {avatar, username} = User;
         return (
             <div className='UserInfo'>
@@ -13,6 +12,5 @@ export class UserInfo extends Component {
                 <h5 className='userNameStyle'>{username}</h5>
             </div>
         );
-    }
 }
 

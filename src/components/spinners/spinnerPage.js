@@ -1,11 +1,9 @@
-import React, {Component} from "react";
+import React, {useContext} from "react";
 import './styleSpinners.css'
 import {DarkThemeContext} from "../../context/contexts";
 
-export class SpinnerBLocks extends Component {
-    static contextType = DarkThemeContext;
-    render() {
-        const darkTheme = this.context;
+export function SpinnerBLocks () {
+        const darkTheme = useContext(DarkThemeContext);
         return (
                 <div className="sk-cube-grid">
                     <div className={`sk-cube sk-cube1 ${darkTheme.isDarkTheme? 'DarkThemeSpinner':'BrightThemeSpinner'}`}></div>
@@ -20,4 +18,3 @@ export class SpinnerBLocks extends Component {
                 </div>
         );
     }
-}

@@ -13,7 +13,7 @@ const defaultStore = {
     movies: [],
     genres: [],
     curPage: 1,
-    curGenre: '',
+    curGenre: undefined,
     searched: [],
     totalPage: '',
     totalResults: '',
@@ -33,7 +33,7 @@ export function mainReducer(store = defaultStore, action) {
                 ...store,
                 movies: payload,
                 curPage: page,
-                curGenre: genre || ''
+                curGenre: genre || undefined
             }
         }
         case GET_GENRES: {

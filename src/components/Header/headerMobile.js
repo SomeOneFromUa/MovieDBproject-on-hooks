@@ -1,7 +1,4 @@
-import React, {Component} from 'react';
-import './headerStyle.css'
-import './MobileHeaderStyle.scss'
-
+import React, {useContext} from 'react';
 import {LogoHeader} from "../logo/logo";
 import {Search} from "../search/Search";
 import {DarkThemeContext} from "../../context/contexts";
@@ -12,60 +9,52 @@ import {SwitchToggler} from "../switchToggler/switchToggler";
 import {UserInfo} from "../UserInfo/userInfo";
 import {Collapse} from '../../components/MoviesList/collapse'
 
-export class HeaderMobile extends Component {
-    state = {
-        isOpen: false,
-        isClosed: true,
-        isGenreBarOpen: false
+import './headerStyle.css'
+import './MobileHeaderStyle.scss'
+
+
+export function HeaderMobile () {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [isClosed, setIsClosed] = React.useState(true);
+    const [isGenreBarOpen, setGenrebarOpen] = React.useState(false);
+   const toggle = ()=>{
+       setIsOpen(true);
+       setIsClosed(!isClosed);
+       setGenrebarOpen(false);
     };
-    toggle = ()=>{
-        this.setState({
-            isOpen: true,
-            isClosed: !this.state.isClosed,
-            isGenreBarOpen: false
-        })
+   const  toogleGenres = ()=> {
+       setGenrebarOpen(!isGenreBarOpen);
+   };
+   const toogleSideBar = ()=>{
+       setIsOpen(false);
+       setIsClosed(true);
+       setGenrebarOpen(false);
     };
-    toogleGenres = ()=>{
-        this.setState({
-            isGenreBarOpen: !this.state.isGenreBarOpen
-        })
-    };
-    toogleSideBar = ()=>{
-        this.setState({
-            isOpen: false,
-            isClosed: true,
-            isGenreBarOpen: false
-        })
-    };
-    render() {
-        const {isClosed,isOpen, isGenreBarOpen} = this.state;
-       const {isDarkTheme, themeToggle} = this.context;
+        const darkTheme = useContext(DarkThemeContext);
+       const {isDarkTheme, themeToggle} = darkTheme;
         return (
        <div className={`d-flex justify-content-between align-items-center  header headerScroled ${isDarkTheme && 'bg-dark text-white'}`}>
-               <img onClick={this.toggle} className='iconMenu m-2' src={MenuIcon} alt="menu"/>
+               <img onClick={toggle} className='iconMenu m-2' src={MenuIcon} alt="menu"/>
            <LogoHeader flag={true}/>
            {isOpen &&
            <div className={`panel${isClosed? ' none':''} ${isDarkTheme && 'bg-dark text-white'} flex-column align-items-start`}>
                <div className='head'>
                    <SwitchToggler flag={isDarkTheme} func={themeToggle} label='toggle theme'/>
-                   <div className='close-btn' onClick={this.toggle}> <img src={Close} alt="close" /></div>
+                   <div className='close-btn' onClick={toggle}> <img src={Close} alt="close" /></div>
                </div>
                {!isGenreBarOpen && [
                    <UserInfo flag={true}/>,
-                   <Search func={this.toogleSideBar}/>,
-                   <NavBar func={this.toogleSideBar}/>
+                   <Search func={toogleSideBar}/>,
+                   <NavBar func={toogleSideBar}/>
                ]}
                 <div className="genresMenu">
-                    <h4 onClick={this.toogleGenres}>{isGenreBarOpen? " < back": "Genres"}</h4>
+                    <h4 onClick={toogleGenres}>{isGenreBarOpen? " < back": "Genres"}</h4>
                 </div>
                {isGenreBarOpen &&
-               <Collapse flag={true} func={this.toogleSideBar}/>
+               <Collapse flag={true} func={toogleSideBar}/>
                }
-
            </div>
            }
        </div>
         );
-    }
 }
-HeaderMobile.contextType = DarkThemeContext;

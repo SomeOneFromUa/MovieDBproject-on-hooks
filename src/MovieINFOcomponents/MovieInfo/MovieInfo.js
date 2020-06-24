@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './MovieInfo.css'
 
-export class MovieInfo extends Component {
-    render() {
-        const {movie, flag} = this.props;
+export function MovieInfo (props) {
+        const {movie, flag} = props;
         const {title, adult, overview} = movie;
         return (
             <div className='card-body'>
@@ -16,5 +15,4 @@ export class MovieInfo extends Component {
                 </p>
             </div>
         );
-    }
 }

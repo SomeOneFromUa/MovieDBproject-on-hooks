@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useContext, useRef} from 'react';
 import {connect} from 'react-redux'
 
 
@@ -13,31 +13,27 @@ import {addToFavorites} from "../../store/actions";
 import './CustomCardStyle.css'
 import {DarkThemeContext} from "../../context/contexts";
 
-export class MovieListCardComponent extends Component {
-    componentDidUpdate(prevProps, prevState, snapshot) {
-    }
-goSpecify = (event)=>{
-    if (!(this.addRef.current.contains(event.target))) {
-        const {history, movie: {id}} = this.props;
+function MovieListCardComponent (props) {
+const goSpecify = (event)=>{
+    if (!(addRef.current.contains(event.target))) {
+        const {history, movie: {id}} = props;
         history.push(`/movie/${id}`)
     } else return
 };
-    onAdd = ()=>{
-        const {addToFavorites, movie} = this.props;
+const onAdd = ()=>{
+        const {addToFavorites, movie} = props;
         console.log(movie);
         addToFavorites(movie)
     };
-addRef = React.createRef();
-    static contextType = DarkThemeContext;
-    render(){
-        const darkTheme = this.context;
-        const {movie, favorites, location:{pathname}, arr} = this.props;
+const addRef = useRef(null);
+    const darkTheme = useContext(DarkThemeContext);
+        const {movie, favorites, location:{pathname}, arr} = props;
 
         if (!movie) return null;
         const {vote_average, poster_path} = movie;
         return (
             <div className={`card cardCustom ${darkTheme.isDarkTheme? "bg-secondary": ""}`}
-                 onClick={this.goSpecify}>
+                 onClick={goSpecify}>
                     <div className="card-body p-0">
                         <div className='justify-content-center d-flex '>
                             {!!poster_path
@@ -54,22 +50,22 @@ addRef = React.createRef();
                     {pathname !== "/favorites" && [
                         <StartRating rating={vote_average}/>,
                         <button className={favorites.find(value => value.id === movie.id)? 'btn btn-success' :'btn btn-info'}
-                        ref={this.addRef}
-                        onClick={this.onAdd}>
+                        ref={addRef}
+                        onClick={onAdd}>
                             {favorites.find(value => value.id === movie.id)? 'added' :'add'}
                         </button>
                     ]}
                     {pathname === "/favorites" &&
                     <button className='btn btn-danger'
-                            ref={this.addRef}
-                            onClick={this.onAdd}>
+                            ref={addRef}
+                            onClick={onAdd}>
                        remove
                     </button>
                     }
                 </div>
             </div>
         );
-    }
+
 }
 const mapDispathToProps = ({
     addToFavorites

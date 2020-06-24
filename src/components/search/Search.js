@@ -19,10 +19,8 @@ class SearchComponent extends Component {
     };
     static contextType = DarkThemeContext;
     componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log(prevState.keyWord,this.state.keyWord );
         if (prevState.keyWord === this.state.keyWord || this.state.keyWord === '') return;
         this.fetchSearch(this.state.keyWord);
-        // console.log(this.state.searched);
     }
     fetchSearch = async (word)=>{
         this.setState({
@@ -118,5 +116,4 @@ handlerKey = (event)=>{
     }
 }
 
-// export const Search = connect()(SearchComponent);
 export const Search = withRouter(SearchComponent);

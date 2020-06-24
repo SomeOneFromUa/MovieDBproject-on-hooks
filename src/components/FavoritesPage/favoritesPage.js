@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
+import React, {useContext} from 'react';
 import {connect} from "react-redux";
 import {MovieListCard} from "../MoviesListCard/MovieListCard";
 import {DarkThemeContext} from "../../context/contexts";
 
-class FavoritesPageComponent extends Component {
-    static contextType = DarkThemeContext;
-    render() {
-        const darkTheme = this.context;
-        const {favorites} = this.props;
+function FavoritesPageComponent(props) {
+
+        const darkTheme = useContext(DarkThemeContext);
+        const {favorites} = props;
         return (
 
                 <div className={darkTheme.isDarkTheme && 'bg-dark'}>
@@ -28,7 +27,7 @@ class FavoritesPageComponent extends Component {
                     </div>
                 </div>
         );
-    }
+
 }
 const mapStateToProps = (store)=>{
     const {mainReducer: {favorites}} = store;

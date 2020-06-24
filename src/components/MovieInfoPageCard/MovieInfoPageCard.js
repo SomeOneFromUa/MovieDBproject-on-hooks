@@ -13,14 +13,13 @@ import {FooterNavigator} from '../../MovieINFOcomponents/footerNavigator/footerN
 
 import './MoviePageCardStyle.scss'
 
-export class MovieInfoPageCardComponent extends Component {
+function MovieInfoPageCardComponent (props) {
 
-    onAddToFavorites = ()=>{
-        const {addToFavorites, movie} = this.props;
+   const onAddToFavorites = ()=>{
+        const {addToFavorites, movie} = props;
         addToFavorites(movie);
     };
-    render() {
-        const {movie, favorites} = this.props;
+        const {movie, favorites} = props;
         const {backdrop_path,
             title,
             tagline,
@@ -48,7 +47,7 @@ export class MovieInfoPageCardComponent extends Component {
                         <div className='row justify-content-between p-2 align-items-center'>
                             <GenreBadge genres={genreArr}/>
                             <button className={favorites.find(value => value.id === movie.id)? 'btn btn-success' :'btn btn-secondary'}
-                                    onClick={this.onAddToFavorites}>
+                                    onClick={onAddToFavorites}>
                                 {favorites.find(value => value.id === movie.id)? 'added to favorites' :'add to favorites'}
                             </button>
                         </div>
@@ -91,7 +90,6 @@ export class MovieInfoPageCardComponent extends Component {
                <FooterNavigator/>
             </div>
         );
-    }
 }
 const mapDispatchToProps = ({
     addToFavorites

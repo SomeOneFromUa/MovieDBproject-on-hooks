@@ -1,56 +1,46 @@
-import React, {Component} from 'react';
+import React, {Component, useContext, useEffect} from 'react';
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
 import {clearOnHome} from "../../store/actions";
-import {DarkThemeContext} from "../../context/contexts";
+import {DarkThemeContext, isDarkTheme} from "../../context/contexts";
 
 import './NavBarStyle.css'
 
 
-export class NavBarComponent extends Component {
-    state = {
-        isNEW: false
-    };
-    CleareHomePage = ()=>{
-        const {func} = this.props;
-        const {clearOnHome} = this.props;
+function NavBarComponent (props) {
+    const [isNEW, setIsNEW] = React.useState(false);
+
+    const CleareHomePage = ()=>{
+        const {func} = props;
+        const {clearOnHome} = props;
         clearOnHome();
         func && func()
     };
-    Watched = ()=>{
-        const {func} = this.props;
-        this.setState({
-            isNEW: false
-        });
+   const Watched = ()=>{
+        const {func} = props;
+       setIsNEW(false);
         func && setTimeout(()=>{func();},200)
     };
+//todo: revise logic
+   useEffect(()=>{
+       console.log('update isNew');
+       setIsNEW(true);
+   }, [props.favorites.length]);
+   
+        const darkTheme = useContext(DarkThemeContext);
+        const {favorites, flag} = props;
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.favorites.length > prevProps.favorites.length){
-            this.setState({
-                isNEW: true
-            })
-        }else return
-    }
-
-
-    static contextType = DarkThemeContext;
-    render() {
-        const darkTheme = this.context;
-        const {favorites, flag} = this.props;
-        const {isNEW} = this.state;
         return (
                <div className={`nawBar ${flag && "direction"}`}>
                    <div>
-                       <NavLink onClick={this.CleareHomePage} className={`${darkTheme.isDarkTheme ? " text-white" : " text-dark"}`} to='/page/1'> <h4>Home</h4></NavLink>
+                       <NavLink onClick={CleareHomePage} className={`${darkTheme.isDarkTheme ? " text-white" : " text-dark"}`} to='/page/1'> <h4>Home</h4></NavLink>
                    </div>
                    <div className='direction'>
-                       <NavLink className={`${darkTheme.isDarkTheme ? " text-white" : " text-dark"}`} onClick={this.Watched} to='/favorites'> <h4>Favorites</h4></NavLink>
+                       <NavLink className={`${darkTheme.isDarkTheme ? " text-white" : " text-dark"}`} onClick={Watched} to='/favorites'> <h4>Favorites</h4></NavLink>
                        {isNEW && favorites.length > 0 && <div className='badge badge-warning'><h6>new</h6></div>}
                    </div>
                </div>
         );
-    }
 }
 const mapStateToProps =(store)=>{
     const {mainReducer: {favorites}} = store;

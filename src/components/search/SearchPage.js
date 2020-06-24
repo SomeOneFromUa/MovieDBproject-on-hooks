@@ -7,7 +7,6 @@ import queryString from 'query-string'
 import {connect} from "react-redux";
 import {getSearched} from "../../store/actions";
 import {DarkThemeContext} from "../../context/contexts";
-
 import './searchStyle.css'
 
 

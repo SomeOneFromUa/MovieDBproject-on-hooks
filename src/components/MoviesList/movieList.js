@@ -11,35 +11,18 @@ import {DarkThemeContext} from "../../context/contexts";
 import {getMoviesMW} from "../../store/MovieDB";
 
 function MovieListComponent (props) {
+    let curSearch = querySring.parse(props.location.search);
     useEffect(()=>{
-        console.log('render');
-        const {match: {params: {page}}, stopDowloading, location: {search}, getMoviesMW} = props;
-        if (props.curPage !== page) {
-            let searched = querySring.parse(search);
+        const {match: {params: {page}}, stopDowloading, location: {search}, getMoviesMW, curPage} = props;
+        let searched = querySring.parse(search);
+        if ((curPage !== page) || (searched.genre !== props.curGenre)) {
+            console.log('update');
             getMoviesMW && getMoviesMW(page, search, searched);
         }else {
+            console.log('not updated');
             stopDowloading()
         }
-    }, []);
-
-    let curSearch = querySring.parse(props.location.search);
-
-    useEffect(()=>{
-        debugger
-        const {match: {params: {page}}, location: {search}, getMoviesMW} = props;
-        getMoviesMW && getMoviesMW(page, search, curSearch);
     }, [props.match.params.page, curSearch.genre]);
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     let prevSearch = querySring.parse(prevProps.location.search);
-    //     let curSearch = querySring.parse(this.props.location.search);
-    //     if ((prevProps.match.params.page !== this.props.match.params.page)||(prevSearch.genre !== curSearch.genre)){
-    //         const {match: {params: {page}}, location: {search}, getMoviesMW} = props;
-    //         getMoviesMW && getMoviesMW(page, search, curSearch);
-    //     }else return
-    // }
-
- 
 
         const darkTheme = useContext(DarkThemeContext);
         const {error,isDownloaded,isDownloading} = props;
