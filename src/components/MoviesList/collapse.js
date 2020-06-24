@@ -14,7 +14,6 @@ class CollapseComponent extends Component {
       const darkTheme = this.context;
       const {genres, curGenre, flag, func} = this.props;
       if (!genres) return ;
-     debugger
       return (
           <div className={flag? 'p-3 d-flex flex-wrap': 'groupList'}>
               {genres.map(value =>

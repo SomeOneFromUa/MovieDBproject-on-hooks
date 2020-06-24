@@ -31,7 +31,7 @@ class FavoritesPageComponent extends Component {
     }
 }
 const mapStateToProps = (store)=>{
-    const {mainReducer: {favorites}} = store
+    const {mainReducer: {favorites}} = store;
     return {
         favorites
     }

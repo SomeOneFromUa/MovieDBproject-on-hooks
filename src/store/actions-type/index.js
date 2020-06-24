@@ -3,3 +3,6 @@ export const GET_GENRES = 'GET_GENRES';
 export const SEARCH = 'SEARCH';
 export const CLEAR_ON_HOME = 'CLEAR_ON_HOME';
 export const ADD_TO_FAVORITES = 'ADD_TO_FAVORITES';
+export const START_DWNLD_MOVIES = 'START_DWNLD_MOVIES';
+export const STOP_DWNLD_MOVIES = 'STOP_DWNLD_MOVIES';
+export const ERROR_HANDLER = 'ERROR_HANDLE';

@@ -1,4 +1,12 @@
-import {GET_GENRES, GET_MOVIES, SEARCH, CLEAR_ON_HOME, ADD_TO_FAVORITES} from '../actions-type/index'
+import {GET_GENRES,
+    GET_MOVIES,
+    SEARCH,
+    CLEAR_ON_HOME,
+    ADD_TO_FAVORITES,
+    ERROR_HANDLER,
+    STOP_DWNLD_MOVIES,
+    START_DWNLD_MOVIES
+} from '../actions-type/index'
 
 export const getMovies = (arr, page, genre)=>{
     return{
@@ -33,5 +41,21 @@ export const addToFavorites = (movie)=>{
     return {
         type: ADD_TO_FAVORITES,
         payload: movie
+    }
+};
+export const startDowloading = ()=>{
+    return {
+        type: START_DWNLD_MOVIES
+    }
+};
+export const stopDowloading = ()=>{
+    return {
+        type: STOP_DWNLD_MOVIES
+    }
+};
+export const errorHandler = (error)=>{
+    return {
+        type: ERROR_HANDLER,
+        payload: error
     }
 };

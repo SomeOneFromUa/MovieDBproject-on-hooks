@@ -32,7 +32,7 @@ addRef = React.createRef();
     render(){
         const darkTheme = this.context;
         const {movie, favorites, location:{pathname}, arr} = this.props;
-       debugger;
+
         if (!movie) return null;
         const {vote_average, poster_path} = movie;
         return (
@@ -78,7 +78,9 @@ const mapStateToProps = (store, ownProps)=>{
     const {mainReducer: {genres, favorites}} = store;
     const {movie: {genre_ids}} = ownProps;
     let arr = [];
-    genre_ids.forEach(id => arr.push(genres.find(value=>value.id === id)));
+    if (genre_ids){
+        genre_ids.forEach(id => arr.push(genres.find(value=>value.id === id)));
+    }
     return {
         genres,
         favorites,
