@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {connect} from 'react-redux'
 import {getGenres,getMovies, stopDowloading} from '../../store/actions/index'
 import {MovieListCard} from "../MoviesListCard/MovieListCard";
@@ -10,32 +10,40 @@ import querySring from 'query-string'
 import {DarkThemeContext} from "../../context/contexts";
 import {getMoviesMW} from "../../store/MovieDB";
 
-class MovieListComponent extends Component {
-    componentDidMount() {
+function MovieListComponent (props) {
+    useEffect(()=>{
         console.log('render');
-        debugger
-        const {match: {params: {page}}, stopDowloading, location: {search}, getMoviesMW} = this.props;
-        if (this.props.curPage !== page) {
+        const {match: {params: {page}}, stopDowloading, location: {search}, getMoviesMW} = props;
+        if (props.curPage !== page) {
             let searched = querySring.parse(search);
             getMoviesMW && getMoviesMW(page, search, searched);
         }else {
-           stopDowloading()
+            stopDowloading()
         }
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        let prevSearch = querySring.parse(prevProps.location.search);
-        let curSearch = querySring.parse(this.props.location.search);
-        if ((prevProps.match.params.page !== this.props.match.params.page)||(prevSearch.genre !== curSearch.genre)){
-            const {match: {params: {page}}, location: {search}, getMoviesMW} = this.props;
-            getMoviesMW && getMoviesMW(page, search, curSearch);
-        }else return
-    }
-    static contextType = DarkThemeContext;
+    }, []);
+
+    let curSearch = querySring.parse(props.location.search);
+
+    useEffect(()=>{
+        debugger
+        const {match: {params: {page}}, location: {search}, getMoviesMW} = props;
+        getMoviesMW && getMoviesMW(page, search, curSearch);
+    }, [props.match.params.page, curSearch.genre]);
+
+    // componentDidUpdate(prevProps, prevState) {
+    //     let prevSearch = querySring.parse(prevProps.location.search);
+    //     let curSearch = querySring.parse(this.props.location.search);
+    //     if ((prevProps.match.params.page !== this.props.match.params.page)||(prevSearch.genre !== curSearch.genre)){
+    //         const {match: {params: {page}}, location: {search}, getMoviesMW} = props;
+    //         getMoviesMW && getMoviesMW(page, search, curSearch);
+    //     }else return
+    // }
+
  
-    render() {
-        const darkTheme = this.context;
-        const {error,isDownloaded,isDownloading} =this.props;
-        const {movies} = this.props;
+
+        const darkTheme = useContext(DarkThemeContext);
+        const {error,isDownloaded,isDownloading} = props;
+        const {movies} = props;
         return (
             <div className={` h-100 flex-wrap d-flex justify-content-center ${darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}>
                 {!isDownloaded && !!error && <div>{error}</div>}
@@ -58,7 +66,6 @@ class MovieListComponent extends Component {
                 }
             </div>
         );
-    }
 }
 const mapDispatchToProps = ({
     getGenres,

@@ -10,23 +10,26 @@ export const MovieDBstore = createStore(rootReducer(), composeWithDevTools(apply
 export const getMoviesMW = (page, search, searched)=>{
 
     return (dispatch, getState)=>{
-        dispatch(startDowloading());
-        debugger
-       return fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${key}&page=${page}&include_adult=true${!!search? `&with_genres=${searched.genre}`: ''}`)
-           .then(response => response.json())
-           .then(json => {
-               if (json.page){
-                   dispatch( getMovies(json.results, page, searched.genre));
-                   dispatch(stopDowloading());
-                   console.log(getState);
-                   console.log(json.results);
-               }else    {
-                   dispatch(errorHandler(json.errors))
-               }
-           })
-           .catch(error => {
-               dispatch(error)
-           })
-
+        let state = getState();
+        let curGenre = state.mainReducer.curGenre;
+        let curPage = state.mainReducer.curPage;
+        if (curGenre !== searched.genre || page !== curPage){
+            dispatch(startDowloading());
+            return fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${key}&page=${page}&include_adult=true${!!search? `&with_genres=${searched.genre}`: ''}`)
+                .then(response => response.json())
+                .then(json => {
+                    if (json.page){
+                        dispatch( getMovies(json.results, page, searched.genre));
+                        dispatch(stopDowloading());
+                        console.log(getState);
+                        console.log(json.results);
+                    }else    {
+                        dispatch(errorHandler(json.errors))
+                    }
+                })
+                .catch(error => {
+                    dispatch(errorHandler(error))
+                })
+        } else return dispatch(stopDowloading())
     }
 };
