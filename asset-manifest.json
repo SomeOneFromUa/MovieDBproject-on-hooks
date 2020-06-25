@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/MovieDBproject-on-hooks/static/css/main.3a27de73.chunk.css",
+    "main.js": "/MovieDBproject-on-hooks/static/js/main.6c2eea21.chunk.js",
+    "main.js.map": "/MovieDBproject-on-hooks/static/js/main.6c2eea21.chunk.js.map",
+    "runtime-main.js": "/MovieDBproject-on-hooks/static/js/runtime-main.d3f91edb.js",
+    "runtime-main.js.map": "/MovieDBproject-on-hooks/static/js/runtime-main.d3f91edb.js.map",
+    "static/css/2.af3c1da9.chunk.css": "/MovieDBproject-on-hooks/static/css/2.af3c1da9.chunk.css",
+    "static/js/2.f03aa32e.chunk.js": "/MovieDBproject-on-hooks/static/js/2.f03aa32e.chunk.js",
+    "static/js/2.f03aa32e.chunk.js.map": "/MovieDBproject-on-hooks/static/js/2.f03aa32e.chunk.js.map",
+    "index.html": "/MovieDBproject-on-hooks/index.html",
+    "precache-manifest.0ff8a7a8d9a2f550ebbe869a5b327c6c.js": "/MovieDBproject-on-hooks/precache-manifest.0ff8a7a8d9a2f550ebbe869a5b327c6c.js",
+    "service-worker.js": "/MovieDBproject-on-hooks/service-worker.js",
+    "static/css/2.af3c1da9.chunk.css.map": "/MovieDBproject-on-hooks/static/css/2.af3c1da9.chunk.css.map",
+    "static/css/main.3a27de73.chunk.css.map": "/MovieDBproject-on-hooks/static/css/main.3a27de73.chunk.css.map",
+    "static/js/2.f03aa32e.chunk.js.LICENSE.txt": "/MovieDBproject-on-hooks/static/js/2.f03aa32e.chunk.js.LICENSE.txt",
+    "static/media/logo.png": "/MovieDBproject-on-hooks/static/media/logo.ac0ac95d.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d3f91edb.js",
+    "static/css/2.af3c1da9.chunk.css",
+    "static/js/2.f03aa32e.chunk.js",
+    "static/css/main.3a27de73.chunk.css",
+    "static/js/main.6c2eea21.chunk.js"
+  ]
+}
