@@ -1,119 +1,90 @@
-import React, {Component} from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
 import {key} from "../../constants";
 import {withRouter} from 'react-router'
+import {SearchCollapse} from "./searchCollapse";
 import './searchStyle.css'
 import {DarkThemeContext} from "../../context/contexts";
 
-class SearchComponent extends Component {
-    state = {
-        keyWord: '',
-        searched: [],
-        searching: false,
-        isOpen: true
+function SearchComponent (props) {
+    const [keyWord, setKeyWord] = React.useState('');
+    const [searched, setSearched] = React.useState([]);
+    const [isOpen, setIsOpen] = React.useState(true);
+
+    const handler = (ev)=>{
+        setKeyWord(ev.target.value);
+        setIsOpen(true);
     };
-    handler = (ev)=>{
-        this.setState({
-            keyWord: ev.target.value,
-            isOpen: true
-        })
-    };
-    static contextType = DarkThemeContext;
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.keyWord === this.state.keyWord || this.state.keyWord === '') return;
-        this.fetchSearch(this.state.keyWord);
-    }
-    fetchSearch = async (word)=>{
-        this.setState({
-            searching: true
-        });
+    useEffect(()=>{
+        if (keyWord === ''){
+            return
+        } else fetchSearch(keyWord)
+    }, [keyWord]);
+
+   const fetchSearch = async (word)=>{
+        // setSearching(true);
         let arr = await fetch(`https://api.themoviedb.org/3/search/keyword?query=${word}&api_key=${key}`);
         let json = await arr.json();
         if (json.status) return ;
         json.results.length = 10;
-        this.setState({
-            searched: json.results,
-            searching: false
-        })
+       setSearched(json.results);
     };
-    onSearch = ()=>{
-        const {func} = this.props;
-        const {keyWord} = this.state;
+
+   const onSearch = ()=>{
+        const {func} = props;
         if (keyWord === '') return;
-        this.setState({
-            isOpen: false
-        });
-    const {history} = this.props;
+        setIsOpen(false);
+    const {history} = props;
     history.push(`/search/1?keyword=${keyWord}`);
-        this.setState({
-            keyWord: '',
-        })
+       setKeyWord('');
         func && func()
     };
-    onChoose = (str)=>{
-        return ()=>{
-            this.setState({
-                keyWord: str
-            })
-        }
+   const onChoose = (str)=>{
+       setKeyWord(str);
     };
- componentDidMount() {
-document.addEventListener('click', this.onClose);
- }
- componentWillUnmount() {
-document.removeEventListener('click', this.onClose)
- }
- searchDropRef = React.createRef();
- inputRef = React.createRef();
 
- onClose = (event)=> {
-     if (this.searchDropRef.current === null) return;
-     if (this.searchDropRef && !this.searchDropRef.current.contains(event.target)){
-         this.setState({
-             isOpen: false
-         })
+    useEffect(()=>{
+        document.addEventListener('click', onClose);
+        return ()=>{
+            document.removeEventListener('click', onClose)
+        }
+    }, []);
+
+ const searchDropRef = useRef(null);
+ const inputRef = useRef(null);
+
+ const onClose = (event)=> {
+     if (searchDropRef.current === null) return;
+     if (searchDropRef && !searchDropRef.current.contains(event.target)){
+         setIsOpen(false);
      }
-     if (this.inputRef && this.inputRef.current.contains(event.target)) {
-         this.setState({
-             isOpen: true
-         })
+     if (inputRef && inputRef.current.contains(event.target)) {
+         setIsOpen(true);
      }
  };
-handlerKey = (event)=>{
+const handlerKey = (event)=>{
         if(event.key === 'Enter'){
             event.preventDefault();
-      this.onSearch()
+      onSearch()
         }
 };
-    render() {
-        const darkTheme = this.context;
-        const {searching,searched, keyWord, isOpen} = this.state;
-
+        const darkTheme = useContext(DarkThemeContext);
         return (
             <nav className="navbar navbar-light" >
-                <form className="form-inline position-relative" >
+                <form className="form-inline position-relative flex-nowrap" >
                     <input className="form-control mr-sm-2"
                            type="text"
                            value={keyWord}
                            size="15"
-                           onChange={this.handler}
-                           ref={this.inputRef}
-                            onKeyPress={this.handlerKey}
+                           onChange={handler}
+                           ref={inputRef}
+                            onKeyPress={handlerKey}
                     />
-                    <div>
-                        {!searching && <ul className="list-group fixed" ref={this.searchDropRef}>
-                            {isOpen &&!!keyWord &&!!searched && searched.map(value =>  <li key={value.id}
-                                                                                  className={`list-group-item ${!darkTheme.isDarkTheme? "bg-dark text-white": "bg-white text-dark"}`}
-                                                                                  onClick={this.onChoose(value.name)}
-                            >
-                                {value.name}
-                            </li>)}
-                        </ul>}
+                    <div ref={searchDropRef}>
+                        {isOpen &&!!keyWord &&!!searched && <SearchCollapse searchList={searched} flag={darkTheme} func={onChoose}/>}
                     </div>
-                        <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.onSearch} type="button">Search</button>
+                        <button className="btn btn-outline-success my-2 my-sm-0" onClick={onSearch} type="button">Search</button>
                 </form>
             </nav>
         );
-    }
 }
-
 export const Search = withRouter(SearchComponent);

@@ -6,7 +6,8 @@ import {CLEAR_ON_HOME,
     ERROR_HANDLER,
     START_DWNLD_MOVIES,
     STOP_DWNLD_MOVIES,
-    SEARCH
+    SEARCH,
+    KEYWORD_HANDLER
 } from '../actions-type/index'
 
 const defaultStore = {

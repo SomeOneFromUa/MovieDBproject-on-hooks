@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {SpinnerBLocks} from "../spinners/spinnerPage";
 import {key} from "../../constants";
 import {MovieListCard} from "../MoviesListCard/MovieListCard";
@@ -10,68 +10,43 @@ import {DarkThemeContext} from "../../context/contexts";
 import './searchStyle.css'
 
 
-class SearchPageComponent extends Component {
-    state = {
-        isDownloading:false,
-        isDownloaded: false,
-        error: '',
-    };
-    componentDidMount() {
-        const {match: {params: {page}}} = this.props;
-        if (this.props.curSearchPage !== page) {
-            this.fetchID()
-        }else {
-            this.setState({
-                isDownloading: false,
-                isDownloaded: true,
-                error: '',
-            })
-        }
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        let prevSearch = queryString.parse(prevProps.location.search);
-        let curSearch = queryString.parse(this.props.location.search);
-        if ((prevProps.match.params.page !== this.props.match.params.page)||(prevSearch.keyword !== curSearch.keyword)){
-            this.fetchID()
-        }else return
-    }
-    fetchID = async ()=>{
-        this.setState({
-            isDownloading: true,
-            isDownloaded: false
-        });
-        const {match: {params: {page}}, location: {search}, getSearched} = this.props;
+function SearchPageComponent (props) {
+    const [isDownloading, setDownloading] = useState(false);
+    const [isDownloaded, setDownloaded] = useState(false);
+    const [error, setError] = useState('');
+    let curSearch = queryString.parse(props.location.search);
+
+    useEffect(()=>{
+                fetchID()
+    },[curSearch.keyword, props.match.params.page] );
+
+    const fetchID = async ()=>{
+        setDownloading(true);
+        setDownloaded(false);
+        const {match: {params: {page}}, location: {search}, getSearched} = props;
         const searched = queryString.parse(search);
         let response = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=en-US&query=${searched.keyword}&page=${page}`);
-    debugger
         if (response.ok) {
             let json = await response.json();
             const {total_pages, total_results} = json;
             getSearched(json.results, total_pages, total_results,page);
-            this.setState({
-                isDownloading:false,
-                isDownloaded: true,
-                error: ''
-            });
+            setDownloaded(true);
+            setDownloading(false);
+            setError('');
         }else {
-            this.setState({
-                isDownloading: false,
-                isDownloaded: false,
-                error: `error code: ${response.status}`
-            })
+            setDownloaded(false);
+            setDownloading(false);
+            setError(`error code: ${response.status}`);
         }
     };
-    static contextType = DarkThemeContext;
-    render() {
-        const darkTheme = this.context;
-        const {isDownloading,isDownloaded,error} = this.state;
-        const {searched, totalResults, totalPage, location: {search}}= this.props;
+    
+        const darkTheme = useContext(DarkThemeContext);
+        const {searched, totalResults, totalPage, location: {search}}= props;
         let keyword = queryString.parse(search);
         return (
             <div>
                 {isDownloaded &&
                 <div className="list-group transition">
-
                     <span className={`list-group-item list-group-item-action ${!!searched.length? "list-group-item-info" : 'list-group-item-warning'}  d-flex justify-content-around `}>
                         {searched.length === 0 &&  <h5 className='m-2'>nothin was found for '{keyword.keyword}'</h5> }
                         {searched.length >= 1 && [
@@ -103,19 +78,19 @@ class SearchPageComponent extends Component {
                     }
             </div>
         );
-    }
 }
 const mapStateToProps = (store)=>{
-    const {mainReducer: {searched, totalPage, totalResults, curSearchPage}} = store;
+    const {mainReducer: {searched, totalPage, totalResults, curSearchPage, curSearchWord}} = store;
     return {
         searched,
         totalResults,
         totalPage,
-        curSearchPage
+        curSearchPage,
+        curSearchWord
     }
 };
 const mapDispathToProps = ({
-    getSearched
+    getSearched,
 });
 
 export const SearchPage = connect(mapStateToProps,mapDispathToProps )(SearchPageComponent);

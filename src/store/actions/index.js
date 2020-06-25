@@ -5,7 +5,8 @@ import {GET_GENRES,
     ADD_TO_FAVORITES,
     ERROR_HANDLER,
     STOP_DWNLD_MOVIES,
-    START_DWNLD_MOVIES
+    START_DWNLD_MOVIES,
+    KEYWORD_HANDLER
 } from '../actions-type/index'
 
 export const getMovies = (arr, page, genre)=>{
@@ -59,3 +60,4 @@ export const errorHandler = (error)=>{
         payload: error
     }
 };
+
