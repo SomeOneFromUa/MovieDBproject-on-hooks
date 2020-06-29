@@ -1,4 +1,4 @@
-click on the link to see this project on github pages https://someonefromua.github.io/MovieDBproject/
+click on the link to see this project on github pages https://someonefromua.github.io/MovieDBproject-on-hooks/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
