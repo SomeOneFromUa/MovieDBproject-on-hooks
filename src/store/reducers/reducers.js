@@ -6,8 +6,7 @@ import {CLEAR_ON_HOME,
     ERROR_HANDLER,
     START_DWNLD_MOVIES,
     STOP_DWNLD_MOVIES,
-    SEARCH,
-    KEYWORD_HANDLER
+    SEARCH
 } from '../actions-type/index'
 
 const defaultStore = {
@@ -19,6 +18,7 @@ const defaultStore = {
     totalPage: '',
     totalResults: '',
     curSearchPage: '',
+    curSearchWord: '',
     favorites: [],
     isDownloading: false,
     isDownloaded: false,
@@ -46,14 +46,14 @@ export function mainReducer(store = defaultStore, action) {
         }
         case SEARCH: {
 
-            const {payload, totalR,totalP, curPage} = action;
+            const {payload, totalR,totalP, curPage, word} = action;
             return {
                 ...store,
                 searched  : payload,
                 totalPage: totalP,
                 totalResults: totalR,
-                curSearchPage: curPage
-
+                curSearchPage: curPage,
+                curSearchWord: word
             }
         }
         case CLEAR_ON_HOME: {

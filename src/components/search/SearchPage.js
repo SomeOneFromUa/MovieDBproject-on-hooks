@@ -17,7 +17,15 @@ function SearchPageComponent (props) {
     let curSearch = queryString.parse(props.location.search);
 
     useEffect(()=>{
-                fetchID()
+        const {match: {params: {page}}, location: {search}, getSearched, curSearchPage, curSearchWord} = props;
+        const searched = queryString.parse(search);
+        if (page !== curSearchPage || searched.keyword !== curSearchWord) {
+            fetchID()
+        }else {
+            setDownloaded(true);
+            setDownloading(false);
+            setError('');
+        }
     },[curSearch.keyword, props.match.params.page] );
 
     const fetchID = async ()=>{
@@ -29,7 +37,7 @@ function SearchPageComponent (props) {
         if (response.ok) {
             let json = await response.json();
             const {total_pages, total_results} = json;
-            getSearched(json.results, total_pages, total_results,page);
+            getSearched(json.results, total_pages, total_results,page, searched.keyword);
             setDownloaded(true);
             setDownloading(false);
             setError('');

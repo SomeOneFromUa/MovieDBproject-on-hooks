@@ -6,7 +6,6 @@ import {GET_GENRES,
     ERROR_HANDLER,
     STOP_DWNLD_MOVIES,
     START_DWNLD_MOVIES,
-    KEYWORD_HANDLER
 } from '../actions-type/index'
 
 export const getMovies = (arr, page, genre)=>{
@@ -23,13 +22,14 @@ export const getGenres = (arr)=>{
         payload: arr
     }
 };
-export const getSearched = (searched, totalP, totalR, page)=>{
+export const getSearched = (searched, totalP, totalR, page, word)=>{
     return {
         type: SEARCH,
         payload: searched,
         totalR: totalR,
         totalP: totalP,
-        curPage: page
+        curPage: page,
+        word: word
     }
 };
 export const clearOnHome = ()=>{

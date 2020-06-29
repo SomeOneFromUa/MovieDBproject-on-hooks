@@ -17,7 +17,7 @@ return(
                     : <h3>MovieDB</h3>
                 }
                 {!flag &&
-                <h6>react app</h6>
+                <h6>react app (hooks only)</h6>
                 }
             </div>
         </div>
